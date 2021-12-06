@@ -18,7 +18,10 @@
 <!-- 但由于目前 mdBook 不会转换 *.md#TAG 这样的链接为 *.html#TAG，所以标题跳转将无法使用（会提示 404，因为输出的 HTML 里没有 md 文件） -->
 <!-- 综上所述，由于 mdBook 最终目的是生成 HTML 以供阅读，因此可以不考虑在普通文件系统上使用的情况？ -->
 
-- [TX2](./TX2/)
+- [编程技巧](./coding-tips/)
+    - [C++ 浮点数转为字符串](./coding-tips/float-to-string.md)
+
+- [TX2 使用笔记](./TX2/)
     - [初识 TX2](./TX2/new-to-tx2.md)
     - [在 TX2 上使用代理](./TX2/using-proxy.md)
 
