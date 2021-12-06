@@ -1,6 +1,6 @@
 # 前言
 
-欢迎来到 **mdBook 模板** 首页。
+欢迎来到 RM-CV Wiki。
 
 该网页使用 [mdBook](https://github.com/rust-lang/mdBook) 构建。
 
@@ -18,8 +18,6 @@
 <!-- 但由于目前 mdBook 不会转换 *.md#TAG 这样的链接为 *.html#TAG，所以标题跳转将无法使用（会提示 404，因为输出的 HTML 里没有 md 文件） -->
 <!-- 综上所述，由于 mdBook 最终目的是生成 HTML 以供阅读，因此可以不考虑在普通文件系统上使用的情况？ -->
 
-- [第 1 章](./chpt-01/)
-    - [章节概览](./chpt-01/#章节概览)
-    - [样例图片](./chpt-01/#样例图片)
-
-
+- [TX2](./TX2/)
+    - [初识 TX2](./TX2/new-to-tx2.md)
+    - [在 TX2 上使用代理](./TX2/using-proxy.md)

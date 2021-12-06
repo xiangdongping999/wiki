@@ -1,4 +1,4 @@
-# mdBook 模板
+# RM-CV Wiki
 
 该内容使用 [mdBook][mdbook] 构建 HTML 页面。
 

@@ -2,7 +2,7 @@
 # 作者
 authors = ["henry_23"]
 # 标题
-title = "mdBook 模板"
+title = "RM-CV Wiki"
 language = "zh-Hans"
 # "zh-Hans": Simplified Chinese
 # "zh-Hant": Traditional Chinese
@@ -12,8 +12,8 @@ src = "src"
 [output.html]
 additional-css = ["theme/css/custom-style.css", "theme/css/custom-font.css"]
 # Git 仓库链接
-git-repository-url = "https://github.com/tsagaanbar/mdbook-template"
+git-repository-url = "https://github.com/MUC-RM-CV/wiki"
 # 编辑链接模板
-edit-url-template = "https://github.com/tsagaanbar/mdbook-template/edit/main/{path}"
+edit-url-template = "https://github.com/MUC-RM-CV/wiki/edit/main/{path}"
 # MathJax 支持
 mathjax-support = true
