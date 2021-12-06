@@ -12,3 +12,9 @@
 .content figcaption {
     text-align: center;
 }
+
+kbd {
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid gray;
+}
