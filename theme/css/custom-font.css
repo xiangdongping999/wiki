@@ -12,6 +12,14 @@ em {
     font-family: "Times New Roman", "KaiTi", sans-serif;
 }
 
+figcaption {
+    font-family: "Times New Roman", "FangSong", sans-serif;
+}
+
 kbd, code {
     font-family: Consolas, "Ubuntu Mono", Menlo, "DejaVu Sans Mono", monospace, monospace !important;
+}
+
+kbd {
+    font-size: smaller;
 }
