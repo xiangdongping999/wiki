@@ -21,3 +21,8 @@
 - [TX2](./TX2/)
     - [初识 TX2](./TX2/new-to-tx2.md)
     - [在 TX2 上使用代理](./TX2/using-proxy.md)
+
+
+## 版权声明
+
+除特别注明外，项目中除代码外的部分均在 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.zh) 协议之条款下提供。
