@@ -18,9 +18,14 @@
 <!-- 但由于目前 mdBook 不会转换 *.md#TAG 这样的链接为 *.html#TAG，所以标题跳转将无法使用（会提示 404，因为输出的 HTML 里没有 md 文件） -->
 <!-- 综上所述，由于 mdBook 最终目的是生成 HTML 以供阅读，因此可以不考虑在普通文件系统上使用的情况？ -->
 
+- [基础知识](./basics/)
+    - [C++ 多文件编程](./basics/multi-files-programming.md)
+
+- [开发环境配置和使用](./tools/)
+    - [Visual Studio Code 中 CMake 插件的基本使用](./tools/vscode-cmake-extension.md)
+    - [Windows 下使用 vcpkg + CMake 进行开发](./tools/dev-with-vcpkg-cmake-win.md)
+
 - [编程技巧](./coding-tips/)
-    - [多文件编程](./coding-tips/multi-files-programming.md)
-    - [Visual Studio Code 中 CMake 插件的基本使用](./coding-tips/vscode-cmake-extension.md)
     - [C++ 浮点数转为字符串](./coding-tips/float-to-string.md)
 
 - [TX2 使用笔记](./TX2/)
