@@ -9,6 +9,7 @@
 
 - [编程技巧](./coding-tips/README.md)
     - [多文件编程](./coding-tips/multi-files-programming.md)
+    - [Visual Studio Code 中 CMake 插件的基本使用](./coding-tips/vscode-cmake-extension.md)
     - [C++ 浮点数转为字符串](./coding-tips/float-to-string.md)
 
 - [TX2 使用笔记](./TX2/README.md)
