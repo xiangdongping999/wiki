@@ -19,6 +19,7 @@
 <!-- 综上所述，由于 mdBook 最终目的是生成 HTML 以供阅读，因此可以不考虑在普通文件系统上使用的情况？ -->
 
 - [编程技巧](./coding-tips/)
+    - [多文件编程](./coding-tips/multi-files-programming.md)
     - [C++ 浮点数转为字符串](./coding-tips/float-to-string.md)
 
 - [TX2 使用笔记](./TX2/)

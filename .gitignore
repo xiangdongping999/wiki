@@ -1,3 +1,9 @@
+# build outputs
+*build*/
+*.exe
+*.out
+*.o
+*.pdb
 
 # mdBook build directory
 book/

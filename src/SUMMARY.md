@@ -8,6 +8,7 @@
 [前言](./README.md)
 
 - [编程技巧](./coding-tips/README.md)
+    - [多文件编程](./coding-tips/multi-files-programming.md)
     - [C++ 浮点数转为字符串](./coding-tips/float-to-string.md)
 
 - [TX2 使用笔记](./TX2/README.md)
