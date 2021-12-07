@@ -1,0 +1,257 @@
+<!DOCTYPE HTML>
+<html lang="zh-Hans" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>C++ 浮点数转为字符串 - RM-CV Wiki</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/css/custom-style.css">
+        <link rel="stylesheet" href="../theme/css/custom-font.css">
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">前言</a></li><li class="chapter-item expanded "><a href="../basics/index.html"><strong aria-hidden="true">1.</strong> 基础知识</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../basics/multi-files-programming.html"><strong aria-hidden="true">1.1.</strong> C++ 多文件编程</a></li></ol></li><li class="chapter-item expanded "><a href="../tools/index.html"><strong aria-hidden="true">2.</strong> 开发环境配置和使用</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tools/vscode-cmake-extension.html"><strong aria-hidden="true">2.1.</strong> Visual Studio Code 中 CMake 插件的基本使用</a></li><li class="chapter-item expanded "><a href="../tools/dev-with-vcpkg-cmake-win.html"><strong aria-hidden="true">2.2.</strong> Windows 下使用 vcpkg + CMake 进行开发</a></li></ol></li><li class="chapter-item expanded "><a href="../coding-tips/index.html"><strong aria-hidden="true">3.</strong> 编程技巧</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../coding-tips/float-to-string.html" class="active"><strong aria-hidden="true">3.1.</strong> C++ 浮点数转为字符串</a></li></ol></li><li class="chapter-item expanded "><a href="../TX2/index.html"><strong aria-hidden="true">4.</strong> TX2 使用笔记</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../TX2/new-to-tx2.html"><strong aria-hidden="true">4.1.</strong> 初识 TX2</a></li><li class="chapter-item expanded "><a href="../TX2/using-proxy.html"><strong aria-hidden="true">4.2.</strong> 在 TX2 上使用代理</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">RM-CV Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/MUC-RM-CV/wiki" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/MUC-RM-CV/wiki/edit/main/src/coding-tips/float-to-string.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="c-浮点数转为字符串"><a class="header" href="#c-浮点数转为字符串">C++ 浮点数转为字符串</a></h1>
+<p>C++ 如何将浮点数转为字符串，并保留一定小数位数呢？比如有一个数 <code>25.56789</code>，只想保留小数点后两位。</p>
+<p><code>sprintf</code>、<code>snprintf</code> 是比较 C 语言的函数，用法也比较简单，本文不再过多介绍，接下来主要介绍一些 C++ 的写法。</p>
+<p>先放参考链接：</p>
+<ul>
+<li><a href="https://stackoverflow.com/questions/59817048/how-to-use-stdto-string-function-to-format-float-as-x-0">c++ - How to use std::to_string function to format float as “x.0” - Stack Overflow</a></li>
+</ul>
+<h2 id="1-stdstringstream"><a class="header" href="#1-stdstringstream">1. std::stringstream</a></h2>
+<p>直接上代码：</p>
+<pre><code class="language-cpp">#include &lt;sstream&gt;
+
+auto formatDobleValue(double val, int fixed) {
+    std::ostringstream oss;
+    oss &lt;&lt; std::setprecision(fixed) &lt;&lt; val;
+    return oss.str();
+}
+</code></pre>
+<h2 id="2-stdto_string--求子串"><a class="header" href="#2-stdto_string--求子串">2. std::to_string + 求子串</a></h2>
+<p>虽然 <code>std::to_string</code> 不支持指定格式化小数的位数，但是我们可以用求子串的方式得到我们想要的结果。</p>
+<pre><code class="language-cpp">#include &lt;string&gt;
+
+auto formatDobleValue(double val, int fixed) {
+    auto str = std::to_string(val);
+    return str.substr(0, str.find(&quot;.&quot;) + fixed + 1);
+}
+</code></pre>
+<h2 id="3-stdto_chars-c-17"><a class="header" href="#3-stdto_chars-c-17">3. std::to_chars (C++ 17)</a></h2>
+<p><a href="https://en.cppreference.com/w/cpp/utility/to_chars">std::to_chars - cppreference.com</a></p>
+<p><a href="https://www.bfilipek.com/2019/11/tochars.html">Bartek's coding blog: How to Convert Numbers into Text with std::to_char in C++17 (bfilipek.com)</a></p>
+<pre><code class="language-cpp">#include &lt;charconv&gt;
+#include &lt;system_error&gt;
+#include &lt;string&gt;
+#include &lt;array&gt;
+
+auto formatDobleValue(double val, int fixed) {
+    std::array&lt;char, 10&gt; str; // char str[10];
+    auto [ptr, ec] = std::to_chars(str.data(), str.data() + str.size(), val, 
+        std::chars_format::fixed, fixed);
+    if (ec == std::errc()) {
+        return std::string(str.data(), ptr - str.data());
+    }
+    else return std::string();
+}
+
+#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; formatDobleValue(0.12345, 3) &lt;&lt; &quot;\n&quot;;
+}
+</code></pre>
+<p>但是很遗憾，截至目前，貌似只有 MSVC 支持除整型以外的重载。估计大家觉得，既然有了 <code>std::format</code>，<code>std::to_chars</code> 就显得比较鸡肋了……</p>
+<p><a href="https://stackoverflow.com/questions/63963961/what-is-the-correct-way-to-call-stdto-chars">c++ - What is the correct way to call std::to_chars? - Stack Overflow</a></p>
+<h2 id="4-stdformat-c-20"><a class="header" href="#4-stdformat-c-20">4. std::format (C++ 20)</a></h2>
+<p>此外，还可以采用 C++ 20  的 <code>std::format</code>！</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;format&gt;
+
+int main() {
+	std::cout &lt;&lt; &quot;Hello World!&quot; &lt;&lt; std::endl;
+	std::cout &lt;&lt; std::format(&quot;{:.3f}&quot;, 22.1234345) &lt;&lt; std::endl;
+}
+</code></pre>
+<p>是不是简单很多？最新的 Visual Studio Preview 已经支持了，快去试试吧！</p>
+<p>需要指定 C++ 版本为 20。建议用 CMake 指定项目的 C++ 版本，方便多了。</p>
+<pre><code class="language-cmake">cmake_minimum_required(VERSION 3.1)
+project (&quot;CProgramming&quot;)
+
+set(CMAKE_CXX_STANDARD 20)
+
+add_executable(hello hello.cpp)
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../coding-tips/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../TX2/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../coding-tips/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../TX2/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>

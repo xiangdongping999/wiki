@@ -1,0 +1,27 @@
+
+.content a { text-decoration: none; font-weight: bold;}
+.content img, .content video {
+    max-width: 80%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.content img:hover {
+    box-shadow: 0 0 8px 4px var(--table-header-bg);
+}
+
+figure > *:not(:last-child) {
+    /* Add space between children of 'figure' elements */
+    display: block;
+    margin-bottom: 10px;
+}
+
+.content figcaption {
+    text-align: center;
+}
+
+kbd {
+    border-radius: 2px;
+    padding: 2px;
+    border: 1px solid gray;
+}

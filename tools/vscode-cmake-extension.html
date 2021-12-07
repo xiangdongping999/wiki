@@ -1,0 +1,275 @@
+<!DOCTYPE HTML>
+<html lang="zh-Hans" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Visual Studio Code 中 CMake 插件的基本使用 - RM-CV Wiki</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/css/custom-style.css">
+        <link rel="stylesheet" href="../theme/css/custom-font.css">
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">前言</a></li><li class="chapter-item expanded "><a href="../basics/index.html"><strong aria-hidden="true">1.</strong> 基础知识</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../basics/multi-files-programming.html"><strong aria-hidden="true">1.1.</strong> C++ 多文件编程</a></li></ol></li><li class="chapter-item expanded "><a href="../tools/index.html"><strong aria-hidden="true">2.</strong> 开发环境配置和使用</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tools/vscode-cmake-extension.html" class="active"><strong aria-hidden="true">2.1.</strong> Visual Studio Code 中 CMake 插件的基本使用</a></li><li class="chapter-item expanded "><a href="../tools/dev-with-vcpkg-cmake-win.html"><strong aria-hidden="true">2.2.</strong> Windows 下使用 vcpkg + CMake 进行开发</a></li></ol></li><li class="chapter-item expanded "><a href="../coding-tips/index.html"><strong aria-hidden="true">3.</strong> 编程技巧</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../coding-tips/float-to-string.html"><strong aria-hidden="true">3.1.</strong> C++ 浮点数转为字符串</a></li></ol></li><li class="chapter-item expanded "><a href="../TX2/index.html"><strong aria-hidden="true">4.</strong> TX2 使用笔记</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../TX2/new-to-tx2.html"><strong aria-hidden="true">4.1.</strong> 初识 TX2</a></li><li class="chapter-item expanded "><a href="../TX2/using-proxy.html"><strong aria-hidden="true">4.2.</strong> 在 TX2 上使用代理</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">RM-CV Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/MUC-RM-CV/wiki" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/MUC-RM-CV/wiki/edit/main/src/tools/vscode-cmake-extension.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="visual-studio-code-中-cmake-插件的基本使用"><a class="header" href="#visual-studio-code-中-cmake-插件的基本使用">Visual Studio Code 中 CMake 插件的基本使用</a></h1>
+<p>CMake 是一个构建管理工具。它可以根据用户编写的脚本生成适用于不同平台、不同工具链的构建文件。</p>
+<h2 id="安装-cmake"><a class="header" href="#安装-cmake">安装 CMake</a></h2>
+<p>访问 <a href="https://cmake.org/">CMake 官网</a> 进入 <a href="https://cmake.org/download/">CMake 下载页面</a>，找到“<a href="https://cmake.org/download/#latest">Latest Release</a>”，下载最新的发行版。</p>
+<p>64 位 Windows 可以选择 Windows x64 Installer 下载即可。安装时，可以选择添加到 PATH 环境变量（Add to PATH）。</p>
+<blockquote>
+<p>在 Visual Studio 中安装“C++ 桌面开发”的工作负载时，默认会安装 CMake。可以尝试从“Develop PowerShell for VS”中启动 Visual Studio Code。这样启动的 Code 中就会具有 Visual Studio 安装相关的环境变量。</p>
+<p><img src="https://img-blog.csdnimg.cn/495f174b99e942b3a7d7a6f1ca4c777b.png" alt="在开始菜单的“所有程序”下的“Visual Studio”目录中可以找到“Develop PowerShell for VS”的启动方式" /></p>
+<p>在“‘开始’菜单”的“所有程序”下的“Visual Studio”目录中可以找到“Develop PowerShell for VS”的启动方式。</p>
+</blockquote>
+<h2 id="visual-studio-code-中的使用"><a class="header" href="#visual-studio-code-中的使用">Visual Studio Code 中的使用</a></h2>
+<p>使用 Visual Studio Code 打开一个工作目录，这里以“CMakeDemo”为例。</p>
+<figure>
+<img alt="使用 Visual Studio Code 打开一个工作目录" src="https://img-blog.csdnimg.cn/1b2ec19e282349708c86e8ef6ff82ae2.png" style="border-radius: 5px; outline: 1px solid gray; outline-offset: -1px;">
+<figcaption>使用 Visual Studio Code 打开一个工作目录</figcaption>
+</figure>
+<p>在插件市场中搜索“CMake”关键字，安装 Microsoft 提供的“<a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools">CMake Tools</a>”插件（会自动安装另一个依赖的插件）。</p>
+<figure>
+<img alt="安装 Microsoft 提供的 CMake Tools 插件" src="https://img-blog.csdnimg.cn/a2e63443e1784f5a83465a44519da5b4.png" style="border-radius: 5px; outline: 1px solid gray; outline-offset: -1px;">
+<figcaption>安装 Microsoft 提供的 CMake Tools 插件</figcaption>
+</figure>
+<p>在目录下新建这些文件：</p>
+<p>CMakeLists.txt</p>
+<pre><code class="language-cmake">project(CMake-Demo)
+
+add_executable(demo &quot;main.cpp&quot; &quot;foo.cpp&quot; &quot;foo.h&quot;)
+</code></pre>
+<blockquote>
+<p><code>add_executable</code> 命令用来告诉 CMake 添加一个“生成可执行程序”的目标。</p>
+</blockquote>
+<p>foo.h</p>
+<pre><code class="language-cpp">#ifndef FOO_H
+#define FOO_H
+
+int some_function(int a, int b);
+
+#endif
+</code></pre>
+<p>foo.cpp</p>
+<pre><code class="language-cpp">#include &quot;foo.h&quot;
+
+int some_function(int a, int b) {
+    return 2 * a + 3 * b;
+}
+</code></pre>
+<p>main.cpp</p>
+<pre><code class="language-cpp">#include &quot;foo.h&quot;
+#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; some_function(1,2);
+}
+</code></pre>
+<p>文件创建并编写完成后，可以按 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> 打开命令面板，输入“configure”检索并执行“CMake: Configure”命令。也可以关闭窗口并重新打开，CMake 插件也会自动检测到当前文件夹下的这个 CMake 项目。</p>
+<figure>
+<img src="https://img-blog.csdnimg.cn/38b5387a1b8947779b325da1ea3e88f0.png" style="border-radius: 5px; outline: 1px solid gray; outline-offset: -1px;">
+<figcaption>Configure CMake 项目</figcaption>
+</figure>
+<p>执行 Configure 操作时，CMake 插件会提示我们选择一个 Kit，根据需要选择自己需要使用的 Kit 即可。</p>
+<figure>
+<img src="https://img-blog.csdnimg.cn/e56e6248ffbf4e62badd8d6dafcaf905.png" style="border-radius: 5px; outline: 1px solid gray; outline-offset: -1px;">
+<figcaption>选择要使用的 Kit</figcaption>
+</figure>
+<p>如果没有问题，CMake 插件将会有类似如下的输出：</p>
+<figure>
+<img src="https://img-blog.csdnimg.cn/db135ff7441b42b6a398beed73b8688a.png" style="border-radius: 5px; outline: 1px solid gray; outline-offset: -1px;">
+<figcaption>Configure 完成的输出</figcaption>
+</figure>
+<blockquote>
+<p>如果出现问题，可以尝试显式指定 CMake 使用的 Generator。</p>
+</blockquote>
+<p>CMake 插件默认在 Visual Studio 窗口的底端提供了一些按钮：</p>
+<p><kbd>⚙ Build</kbd> 按钮旁的是要构建的目标，默认为 all，也就是所有的目标。</p>
+<figure>
+<img src="https://img-blog.csdnimg.cn/a5a88e480ed84a99b2f6b2979d8f8d93.png" style="border-radius: 5px; outline: 1px solid gray; outline-offset: -1px;">
+<figcaption>选择要 Build 的目标</figcaption>
+</figure>
+<p>点击 <kbd>⚙ Build</kbd> 按钮即可开始构建指定的项目。</p>
+<p>CMake 插件默认的构建目录为工作目录下的 <code>build</code> 目录。CMake 生成的文件，以及构建产生的结果，都会在这个目录下。</p>
+<blockquote>
+<p>这种方式称为“out-of-source build（在源代码之外构建）”，即构建相关的文件与源代码是分离开的，不会污染代码树。</p>
+</blockquote>
+<p><kbd>🐞</kbd> 和 <kbd>▶</kbd> 按钮分别为“调试运行”与“运行”；使用它们旁边的按钮可以选择要调试/运行的项目。</p>
+<figure>
+<img src="https://img-blog.csdnimg.cn/c396b38eae5849368b5ad2a1850d5319.png" style="border-radius: 5px; outline: 1px solid gray; outline-offset: -1px;">
+<figcaption>选择要调试/运行的项目</figcaption>
+</figure>
+<h2 id="子项目"><a class="header" href="#子项目">子项目</a></h2>
+<p>一个含有 CMakeLists.txt 文件的目录就可以视作一个项目。假如一个目录中下有多个 CMake 项目，也可以使用 <code>add_subdirectory</code> 命令将它们添加进来。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../tools/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../tools/dev-with-vcpkg-cmake-win.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../tools/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../tools/dev-with-vcpkg-cmake-win.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>

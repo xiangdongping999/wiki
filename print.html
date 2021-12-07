@@ -1,0 +1,904 @@
+<!DOCTYPE HTML>
+<html lang="zh-Hans" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>RM-CV Wiki</title>
+        <meta name="robots" content="noindex" />
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/css/custom-style.css">
+        <link rel="stylesheet" href="theme/css/custom-font.css">
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">前言</a></li><li class="chapter-item expanded "><a href="basics/index.html"><strong aria-hidden="true">1.</strong> 基础知识</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="basics/multi-files-programming.html"><strong aria-hidden="true">1.1.</strong> C++ 多文件编程</a></li></ol></li><li class="chapter-item expanded "><a href="tools/index.html"><strong aria-hidden="true">2.</strong> 开发环境配置和使用</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tools/vscode-cmake-extension.html"><strong aria-hidden="true">2.1.</strong> Visual Studio Code 中 CMake 插件的基本使用</a></li><li class="chapter-item expanded "><a href="tools/dev-with-vcpkg-cmake-win.html"><strong aria-hidden="true">2.2.</strong> Windows 下使用 vcpkg + CMake 进行开发</a></li></ol></li><li class="chapter-item expanded "><a href="coding-tips/index.html"><strong aria-hidden="true">3.</strong> 编程技巧</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="coding-tips/float-to-string.html"><strong aria-hidden="true">3.1.</strong> C++ 浮点数转为字符串</a></li></ol></li><li class="chapter-item expanded "><a href="TX2/index.html"><strong aria-hidden="true">4.</strong> TX2 使用笔记</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="TX2/new-to-tx2.html"><strong aria-hidden="true">4.1.</strong> 初识 TX2</a></li><li class="chapter-item expanded "><a href="TX2/using-proxy.html"><strong aria-hidden="true">4.2.</strong> 在 TX2 上使用代理</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">RM-CV Wiki</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/MUC-RM-CV/wiki" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="前言"><a class="header" href="#前言">前言</a></h1>
+<p>欢迎来到 RM-CV Wiki。</p>
+<p>该网页使用 <a href="https://github.com/rust-lang/mdBook">mdBook</a> 构建。</p>
+<h2 id="导航"><a class="header" href="#导航">导航</a></h2>
+<!-- 可以使用如下的方式在页面中引用其他的页面 -->
+<!-- 对 *.md 文件的引用链接，会转换为对同名 *.html 的引用 -->
+<!-- 即目录下的 *.md 文件，都会被会转换为 *.html，但是 README.md 会被转换为 index.html -->
+<!-- 因此对某目录下 README 的引用，需要写作 <目录名>/index.html 或者简写作 <目录名>/ -->
+<!-- 注意 “<目录名>/” 最后的 / 不能省却，不然对应页面下相对资源的访问就会出错 -->
+<!-- 可以使用 #TAG 来引用页面下的子标题。具体的转写应参见 mdBook 生成的 HTML 中标题的链接 -->
+<!-- 以上都是针对生成 HTML 而言。但是对于普通文件系统来说，<path>/ 这样的链接是不能访问到对应文件的 -->
+<!-- 可以使用 <path>/README.md，这样转换之后变为 <path>/index.html，不影响两种情况下的访问 -->
+<!-- 但由于目前 mdBook 不会转换 *.md#TAG 这样的链接为 *.html#TAG，所以标题跳转将无法使用（会提示 404，因为输出的 HTML 里没有 md 文件） -->
+<!-- 综上所述，由于 mdBook 最终目的是生成 HTML 以供阅读，因此可以不考虑在普通文件系统上使用的情况？ -->
+<ul>
+<li>
+<p><a href="./basics/">基础知识</a></p>
+<ul>
+<li><a href="./basics/multi-files-programming.html">C++ 多文件编程</a></li>
+</ul>
+</li>
+<li>
+<p><a href="./tools/">开发环境配置和使用</a></p>
+<ul>
+<li><a href="./tools/vscode-cmake-extension.html">Visual Studio Code 中 CMake 插件的基本使用</a></li>
+<li><a href="./tools/dev-with-vcpkg-cmake-win.html">Windows 下使用 vcpkg + CMake 进行开发</a></li>
+</ul>
+</li>
+<li>
+<p><a href="./coding-tips/">编程技巧</a></p>
+<ul>
+<li><a href="./coding-tips/float-to-string.html">C++ 浮点数转为字符串</a></li>
+</ul>
+</li>
+<li>
+<p><a href="./TX2/">TX2 使用笔记</a></p>
+<ul>
+<li><a href="./TX2/new-to-tx2.html">初识 TX2</a></li>
+<li><a href="./TX2/using-proxy.html">在 TX2 上使用代理</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="版权声明"><a class="header" href="#版权声明">版权声明</a></h2>
+<p>除特别注明外，项目中除代码外的部分均在 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh">CC BY-SA 4.0</a> 协议之条款下提供。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="基础知识"><a class="header" href="#基础知识">基础知识</a></h1>
+<ul>
+<li><a href="basics/./multi-files-programming.html">C++ 多文件编程</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="c-多文件编程"><a class="header" href="#c-多文件编程">C++ 多文件编程</a></h1>
+<p>C++ 的初学者通常将所有的代码编写在一个文件内。但随着学识的增长，我们总会接触到许多多文件的项目。那么，多文件能解决什么问题，又有什么好处？</p>
+<h2 id="多文件的好处"><a class="header" href="#多文件的好处">多文件的好处</a></h2>
+<p>我们先不考虑 C++ 实现多文件的方法。我们只需考虑，如果把代码分区放在不同的文件中，是否会方便我们对于代码的查找、管理和协同工作？</p>
+<p>此外，我们知道，C++ 是一门需要编译的语言。假如代码分别放在不同的区块中，是否可以实现在每次修改时，只更新改动了的部分？</p>
+<p>带着这两个问题，我们便可以继续接下来的内容。</p>
+<h2 id="c-编译链接简介"><a class="header" href="#c-编译链接简介">C++ 编译链接简介</a></h2>
+<p>我们先从最熟悉的单文件的情况说起。下面是一个简单的 C++ 源文件，里面有一个 <code>foo</code> 函数和有一个 <code>main</code> 函数。根据经验我们知道，一个 C++ 程序需要有 <code>main</code> 函数才能运行。</p>
+<pre><code class="language-cpp">// demo.cpp
+
+int foo(int, int);  // foo 函数的声明
+
+int main() {
+    int result = foo(3, 5);
+    return 0;
+}
+
+int foo(int a, int b) {  // foo 函数的定义
+    return 2 * a + b;
+}
+</code></pre>
+<p>我们观察文件发现，<code>main</code> 函数调用了 <code>foo</code> 函数。这不是件理所当然的事。事实上，在 <strong>编译</strong> (compile) 过程中，当编译器遇到 <code>foo(3, 5)</code> 这样的表达式时，会去查看是否存在这样的函数可供使用，也就是查找在之前是否已经出现了函数的声明。</p>
+<p>对于这里的 <code>foo(3, 5)</code> 语句来说，编译器就要去查找，是否有一个名为 <code>foo</code> 的函数声明，满足参数为两个 <code>int</code> 型整数的情况；如果没有，就要去查找之前的函数声明中，是否有参数列表中参数类型支持从 <code>int</code> 类型转换而得的 <code>foo</code> 函数。</p>
+<p>幸运的是，在这条语句之前，我们有一个这样的函数声明，因此编译器能够通过编译；否则，就会报出 <strong>未定义/未声明标识符</strong> (undefined/undeclared identifier) 的错误。</p>
+<p>但是，现在还不能生成最终的可执行程序，因为我们还不清楚 <code>foo</code> 函数的具体定义。编译器会将这个符号加入到 <em>未解决符号表</em> 中。</p>
+<p>不过，在这个情况里，编译器接着往下走，就会发现 <code>foo</code> 函数的定义，并将其出现的位置记下来。</p>
+<p>如此，编译器就从源代码文件生成了目标文件，之后，将进入<strong>链接</strong> (Linking) 阶段。在这个阶段中，编译器根据未解决符号表，去查找是否具有对应的符号，查找到之后，就将为未解决符号记下符号所在的位置。</p>
+<p>在上面的例子中，<code>foo(3, 5)</code> 这个语句将会找到在 <code>main</code> 函数之后定义的 <code>foo</code> 函数，因此被解决。如果没有查找到，将会出现 <strong>未解决的外部符号</strong> (unresolved external symbol) 或者 <strong>未定义引用</strong> (undefined reference) 的错误。</p>
+<blockquote>
+<p>事实上，我们也可以将函数和声明和函数定义写在一起，比如下面这样。</p>
+<pre><code class="language-cpp">// demo.cpp
+
+int foo(int, int) { return 2 * a + b; }
+
+int main() {
+    int result = foo(3, 5);
+    return 0;
+}
+</code></pre>
+</blockquote>
+<p>我们将每一个 C/C++ 源文件称作一个翻译单元 (translation unit)。那么在上述的例子中，我们的翻译单元会提供一个 <code>int foo(int, int)</code> 和一个 <code>int main()</code> 的符号，并且有一个 <code>int foo(int, int)</code> 的符号待解决。经过了链接过程，未解决符号得到了解决，于是就可以生成可执行程序了。</p>
+<h2 id="将文件拆开"><a class="header" href="#将文件拆开">将文件拆开</a></h2>
+<p>假如 <code>foo</code> 函数是一个经常会被用到的函数。在单文件的情况时，我们每写一个新的程序，都需要将其复制到新的源代码文件中。但有了之前的基础，我们发现，可以将 <code>foo</code> 函数拿出来放进单独的文件中。</p>
+<blockquote>
+<p>接下来的例子中涉及到通过命令行操作编译器。读者只需要明白操作的目的即可，实际使用中不必要手动输入这些命令。</p>
+</blockquote>
+<p>下面的 <code>foo.cpp</code> 是一个包含 <code>foo</code> 函数的源代码文件。</p>
+<pre><code class="language-cpp">// foo.cpp
+
+int foo(int a, int b) {
+    return 2 * a + b;
+}
+</code></pre>
+<p>我们让编译器编译 <code>foo.cpp</code> 生成目标文件 <code>foo.o</code>。</p>
+<pre><code class="language-console">$ c++ foo.cpp -c -o foo.o
+</code></pre>
+<p>不出意外的话，当前目录下会多出一个名为 <code>foo.o</code> 的目标文件。目标文件的内容一般不易为人类所阅读，我们只需要知道，这个目标文件提供了 <code>int foo(int, int)</code> 这样一个符号。</p>
+<p>接着，我们的 <code>main.cpp</code> 将会写作下面的样子。</p>
+<pre><code class="language-cpp">// main.cpp
+
+int foo(int, int);  // 只需要 foo 函数的声明
+
+int main() {
+    int result = foo(3, 5);
+    return 0;
+}
+</code></pre>
+<p>同样，我们将 <code>main.cpp</code> 编译为目标文件。这个目标文件提供了 <code>int main()</code> 这样一个符号，但有一个 <code>int foo(int, int)</code> 的符号待解决。</p>
+<p>之后，我们将两个目标文件链接起来，期望生成最后的可执行程序 <code>main</code>。很顺利，没有出现未解决符号，可执行文件生成成功。</p>
+<pre><code class="language-console">$ c++ main.o foo.o -o main
+</code></pre>
+<h2 id="预处理指令"><a class="header" href="#预处理指令">预处理指令</a></h2>
+<p>在编译之前，编译器会先对代码文件进行预处理。有很多预处理指令，比如 <code>define</code>、<code>include</code>。这些命令通常以 <code>#</code> 开始。</p>
+<p>一般来说，<code>define</code> 命令可以用来将代码中的宏名替换为对应的内容。除此之外，<code>define</code> 也可以和 <code>ifndef</code>、<code>ifndef</code> 命令配合起来实现“条件编译”。</p>
+<p>比如，下面的代码中，因为 <code>define</code> 过名为 <code>FLAG</code> 的宏 (macro)，因此，<code>ifdef</code> 命令条件为真，<code>#ifdef FLAG</code> 和 <code>#endif</code> 之间的代码将会出现在预处理过的代码中；反之，如果没有定义过 <code>FLAG</code>，则其中的代码将不会出现在预处理的结果中。</p>
+<pre><code class="language-cpp">#define FLAG
+
+int foo(int, int);
+
+int main() {
+#ifdef FLAG
+    foo(3, 4);
+#endif
+    return 0;
+}
+</code></pre>
+<p><code>ifndef</code> 的作用和 <code>ifdef</code> 相反，即，如果没有定义过相应的宏名，才会满足条件。下面的代码中，<code>#ifndef FLAG</code> 和 <code>#endif</code> 之间的代码不会出现在预处理的结果中。</p>
+<pre><code class="language-cpp">#define FLAG
+
+int foo(int, int);
+
+int main() {
+#ifndef FLAG
+    foo(3, 4);
+#endif
+    return 0;
+}
+</code></pre>
+<p>而<code>include</code> 命令即为将相应的文件内容复制到当前文件里。没错，就是按照原样复制进来。</p>
+<h2 id="头文件"><a class="header" href="#头文件">头文件</a></h2>
+<p>在上一节的例子中，我们在 <code>main.cpp</code> 中手动写入了 <code>int foo(int, int);</code> 的声明。但当声明较多时，手动编写或复制仍是比较麻烦的。因此，我们一般要为自己的 <code>foo.cpp</code> 编写相应的头文件 (headers) <code>foo.h</code>。这样，我们只需在 <code>main.cpp</code> 中 <code>include</code> 头文件 <code>foo.h</code> 即可。</p>
+<p>现在，目录下有这样三个文件：</p>
+<ul>
+<li><a href="basics/./assets/1/foo.h">foo.h</a></li>
+<li><a href="basics/./assets/1/foo.cpp">foo.cpp</a></li>
+<li><a href="basics/./assets/1/main.cpp">main.cpp</a></li>
+</ul>
+<pre><code class="language-cpp">// foo.h
+
+#ifndef FOO_H
+#define FOO_H
+
+int foo(int, int);
+
+inline void func() { return; }  // 内联函数
+
+class A {  // A 类型的声明
+    int num;
+public:
+    A() = default;
+    int get_num() {  // 直接写在类中的函数也是内联的
+        return this-&gt;num;
+    }
+    void set_num(int num_) {
+        this-&gt;num = num_;
+    }
+    void add(int m);  // 成员函数的实现也可以放在 cpp 中（类外实现）
+};
+
+#endif  // FOO_H
+</code></pre>
+<p>注意，<a href="basics/./assets/1/foo.h">foo.h</a> 中使用 <code>ifndef</code> 等命令实现了该文件在每个翻译单元中仅会被包含一次。这叫做头文件保护 (header guards)。如果用户在一个源文件中不小心引用了两次头文件，或是包含的若干个头文件中都包含了某个头文件，那么将会出现同一个头文件在一个源文件中被引用多次的情况，即造成了重复声明。</p>
+<p>此外，头文件中一般不能包含函数定义。试想，如果包含了函数定义的头文件被多个源代码文件包含，则这些源代码文件编译生成的目标文件中都会出现相同的符号。这会导致链接过程中链接器无法决定该使用哪一个符号。同理，也不应该使用 <code>include</code> 将函数定义的代码直接包含进源代码文件。</p>
+<p>不过，实际使用中也会出现需要将一些常用的函数放在头文件中的情况，亦即我们在会在很多源文件中用到这一函数。我们希望这些相同的函数在链接时不会相互冲突，因此，我们需要使用 <code>inline</code> 关键字修饰它。</p>
+<p>另一种情况是，我们希望一个函数仅在当前翻译单元可用，而在不同的翻译单元中可能同名但定义不同的函数。这时我们应用 <code>static</code> 关键字修饰它们。</p>
+<pre><code class="language-cpp">// foo.cpp
+
+#include &quot;foo.h&quot;
+
+static int f(int a, int b) { return a - b; }
+
+int foo(int a, int b) {
+    
+    a = f(a, b);
+
+    A inst_1;  // 使用了 foo.h 中的 A 类型，因此需要引用 foo.h
+    inst_1.set_num(2 * a);
+    inst_1.add(b);
+
+    return inst_1.get_num();
+}
+
+void A::add(int n) {
+    this-&gt;num += n;
+}
+</code></pre>
+<p>在 <a href="basics/./assets/1/foo.cpp">foo.cpp</a> 中，同样引用了相对应的头文件，这是由于，头文件中可能包含了一些结构或类型的声明，或者包含其他的一些头文件。这时候，需要引用该头文件，否则编译时将会出现未声明符号的问题。</p>
+<pre><code class="language-cpp">// main.cpp
+
+#include &quot;foo.h&quot;
+
+static int f(int a, int b) { return a + b; }
+
+int main() {
+    int result = foo(2, 3);
+    int t = f(4, 5);
+}
+</code></pre>
+<p>最后，<a href="basics/./assets/1/main.cpp">main.cpp</a> 中只需要调用 <a href="basics/./assets/1/foo.h">foo.h</a> 中提供的符号即可。</p>
+<p>在编译的时候，分别生成目标文件：</p>
+<pre><code class="language-console">$ c++ foo.cpp -c -o foo.o
+$ c++ main.cpp -c -o main.o
+</code></pre>
+<p>再执行链接操作：</p>
+<pre><code class="language-console">$ c++ main.o foo.o -o main
+</code></pre>
+<p>参考资料：</p>
+<ul>
+<li>https://en.cppreference.com/w/c/language/storage_duration</li>
+<li>https://en.cppreference.com/w/cpp/language/storage_duration</li>
+</ul>
+<h2 id="头文件搜索路径"><a class="header" href="#头文件搜索路径">头文件搜索路径</a></h2>
+<p>当使用双引号 <code>&quot;&quot;</code> 包含头文件时，编译器首先查找当前工作目录或源代码目录，然后再在标准位置查找。而使用尖括号 <code>&lt;&gt;</code> 时，编译器将在系统的头文件目录中查找。</p>
+<h2 id="构建工具"><a class="header" href="#构建工具">构建工具</a></h2>
+<p>上述生成可执行文件 <code>main</code> 的过程，就叫做<strong>构建</strong> (build)。在这个过程中，我们的 <em>目标</em> 是生成可执行程序 <code>main</code>，而这个目标需要 <code>main.cpp</code>、<code>foo.h</code> 以及 <code>foo.cpp</code> 三个文件；其中，<code>main.cpp</code> 和 <code>foo.cpp</code> 又依赖于 <code>foo.h</code> 文件。</p>
+<p>更具体地来说，生成可执行程序 <code>main</code> <em>依赖</em> <code>main.o</code> 和 <code>foo.o</code> 两个目标文件，而这两个目标文件，又分别由对应的 <code>cpp</code> 文件生成。假如目标文件对应的 <code>cpp</code> 文件发生了更改（又或者其所包含的头文件发生了更改），都需要重新生成相应的目标文件，才能保证最终链接之后生成的可执行程序是最新的。</p>
+<p>不同于曾经的单文件，现在我们要构建一个目标需要多个文件。有两个问题需要解决：</p>
+<ul>
+<li>每次都需要输入多条命令才能完成编译、链接，而不是一条；</li>
+<li>我们希望减少编译的次数，因此需要记录哪些文件发生了更改，只对有必要重新编译的文件编译。</li>
+</ul>
+<p>如果项目更多、项目之间有依赖关系，则需要输入更多、更复杂的命令，也需要留意更多的文件。如果全由用户来做，很容易出现差错。</p>
+<p>构建工具可以帮助我们自动化上述的流程。我们告诉构建工具生成目标需要哪些依赖，构建工具就可以在每次我们需要重新构建目标时，检测需要重新生成的文件，并完成构建流程。</p>
+<p>一些 IDE 会有自己的构建工具，但通常把这个过程对用户隐去了。用户将源代码添加进一个“项目”中，IDE 便将其视作生成该项目的依赖。</p>
+<h2 id="cmake"><a class="header" href="#cmake">CMake</a></h2>
+<p>使用 CMake 这样一个构建管理工具，只需编写一个 <code>CMakeLists.txt</code> 文件，便可以生成用于不同构建工具的脚本。</p>
+<h2 id="具体演示"><a class="header" href="#具体演示">具体演示</a></h2>
+<p>可以在 <a href="https://gitlab.com/klixr/cpp-multi-file-demo/">gitlab.com/klixr/cpp-multi-file-demo</a> 查看一个具体的示例。</p>
+<p>也可通过下边的链接访问上述示例的副本。</p>
+<p>假设我们现在有这样一个 C++ 文件 <a href="basics/assets/2/single_file_demo.cpp">single_file_demo.cpp</a>，示例将其拆分成了多文件的形式。</p>
+<p><code>Date</code> 库：</p>
+<p><a href="basics/assets/2/Date/Date.hpp">Date/Date.hpp</a></p>
+<pre><code class="language-cpp">// Date.hpp
+
+// 头文件需要进行保护，目的是避免重复包含
+
+#ifndef DATE_HPP
+#define DATE_HPP
+
+// 头文件中不能包含具体的定义
+// 由于头文件可能会被多个 cpp （编译单元）包含
+// 如果头文件中包含具体的定义，这些编译单元在最后链接过程中，会出现多个重复的符号
+// 如果确需在头文件中包含具体函数的定义，需要声明为 inline（内联）
+
+class Date {
+    int y;
+    int m;
+    int d;
+    auto is_leap(int year) {
+        return (year % 4 ==0 &amp;&amp; year % 100 != 0) || year % 400 == 0;
+    }
+public:
+    // 类的声明中直接书写的函数也属于 inline 函数
+    Date(int y_, int m_, int d_) : y(y_), m(m_), d(d_) {}
+
+    // 也可以只写声明，再在 cpp 文件中实现这个函数
+    int get_days();
+};
+
+
+#endif // DATE_HPP
+</code></pre>
+<p><a href="basics/assets/2/Date/Date.cpp">Date/Date.cpp</a></p>
+<pre><code class="language-cpp">// Date.cpp
+
+// 由于需要实现 Date.hpp 中声明的函数，需要包含 Date.hpp
+
+#include &quot;Date.hpp&quot;
+
+int Date::get_days()
+{
+    int days[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    if (is_leap(this-&gt;y)) {
+        days[2] = 29;
+    }
+    auto cnt = 0;
+    for (int i = 1; i &lt; this-&gt;m; ++i) {
+        cnt += days[i];
+    }
+    cnt += this-&gt;d;
+    return cnt;
+}
+
+</code></pre>
+<p><a href="basics/assets/2/Date/CMakeLists.txt">Date/CMakeLists.txt</a></p>
+<pre><code class="language-cmake">project(My-Date)
+
+add_library(Date &quot;Date.hpp&quot; &quot;Date.cpp&quot;)
+target_include_directories(Date INTERFACE .)
+</code></pre>
+<p>使用 <code>Date</code> 库：</p>
+<p><a href="basics/assets/2/demo.cpp">demo.cpp</a></p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &quot;Date.hpp&quot;
+
+int main() {
+    int y, m, d;
+    std::cin &gt;&gt; y &gt;&gt; m &gt;&gt; d;
+    Date d1(y, m, d);
+    std::cout &lt;&lt; d1.get_days();
+}
+</code></pre>
+<p><a href="basics/assets/2/CMakeLists.txt">CMakeLists.txt</a></p>
+<pre><code class="language-cmake">project(CPP-Multi-File-Demo)
+
+add_executable(single_file_demo &quot;single_file_demo.cpp&quot;)
+
+# 逐一指明目标 demo 需要的源文件
+# add_executable(demo &quot;demo.cpp&quot; &quot;Date/Date.hpp&quot; &quot;Date/Date.cpp&quot;)
+
+# 或者：
+
+# 将 Date 生成为一个 Library
+# 并作为子项目引入
+# 子目录 Date 中的 CMakeLists.txt 包含生成 Date 这个 library 的目标
+
+add_subdirectory(Date)
+
+add_executable(demo &quot;demo.cpp&quot;)
+target_link_libraries(demo Date)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="开发环境配置和使用"><a class="header" href="#开发环境配置和使用">开发环境配置和使用</a></h1>
+<ul>
+<li><a href="tools/./vscode-cmake-extension.html">Visual Studio Code 中 CMake 插件的基本使用</a></li>
+<li><a href="tools/./dev-with-vcpkg-cmake-win.html">Windows 下使用 vcpkg + CMake 进行开发</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="visual-studio-code-中-cmake-插件的基本使用"><a class="header" href="#visual-studio-code-中-cmake-插件的基本使用">Visual Studio Code 中 CMake 插件的基本使用</a></h1>
+<p>CMake 是一个构建管理工具。它可以根据用户编写的脚本生成适用于不同平台、不同工具链的构建文件。</p>
+<h2 id="安装-cmake"><a class="header" href="#安装-cmake">安装 CMake</a></h2>
+<p>访问 <a href="https://cmake.org/">CMake 官网</a> 进入 <a href="https://cmake.org/download/">CMake 下载页面</a>，找到“<a href="https://cmake.org/download/#latest">Latest Release</a>”，下载最新的发行版。</p>
+<p>64 位 Windows 可以选择 Windows x64 Installer 下载即可。安装时，可以选择添加到 PATH 环境变量（Add to PATH）。</p>
+<blockquote>
+<p>在 Visual Studio 中安装“C++ 桌面开发”的工作负载时，默认会安装 CMake。可以尝试从“Develop PowerShell for VS”中启动 Visual Studio Code。这样启动的 Code 中就会具有 Visual Studio 安装相关的环境变量。</p>
+<p><img src="https://img-blog.csdnimg.cn/495f174b99e942b3a7d7a6f1ca4c777b.png" alt="在开始菜单的“所有程序”下的“Visual Studio”目录中可以找到“Develop PowerShell for VS”的启动方式" /></p>
+<p>在“‘开始’菜单”的“所有程序”下的“Visual Studio”目录中可以找到“Develop PowerShell for VS”的启动方式。</p>
+</blockquote>
+<h2 id="visual-studio-code-中的使用"><a class="header" href="#visual-studio-code-中的使用">Visual Studio Code 中的使用</a></h2>
+<p>使用 Visual Studio Code 打开一个工作目录，这里以“CMakeDemo”为例。</p>
+<figure>
+<img alt="使用 Visual Studio Code 打开一个工作目录" src="https://img-blog.csdnimg.cn/1b2ec19e282349708c86e8ef6ff82ae2.png" style="border-radius: 5px; outline: 1px solid gray; outline-offset: -1px;">
+<figcaption>使用 Visual Studio Code 打开一个工作目录</figcaption>
+</figure>
+<p>在插件市场中搜索“CMake”关键字，安装 Microsoft 提供的“<a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools">CMake Tools</a>”插件（会自动安装另一个依赖的插件）。</p>
+<figure>
+<img alt="安装 Microsoft 提供的 CMake Tools 插件" src="https://img-blog.csdnimg.cn/a2e63443e1784f5a83465a44519da5b4.png" style="border-radius: 5px; outline: 1px solid gray; outline-offset: -1px;">
+<figcaption>安装 Microsoft 提供的 CMake Tools 插件</figcaption>
+</figure>
+<p>在目录下新建这些文件：</p>
+<p>CMakeLists.txt</p>
+<pre><code class="language-cmake">project(CMake-Demo)
+
+add_executable(demo &quot;main.cpp&quot; &quot;foo.cpp&quot; &quot;foo.h&quot;)
+</code></pre>
+<blockquote>
+<p><code>add_executable</code> 命令用来告诉 CMake 添加一个“生成可执行程序”的目标。</p>
+</blockquote>
+<p>foo.h</p>
+<pre><code class="language-cpp">#ifndef FOO_H
+#define FOO_H
+
+int some_function(int a, int b);
+
+#endif
+</code></pre>
+<p>foo.cpp</p>
+<pre><code class="language-cpp">#include &quot;foo.h&quot;
+
+int some_function(int a, int b) {
+    return 2 * a + 3 * b;
+}
+</code></pre>
+<p>main.cpp</p>
+<pre><code class="language-cpp">#include &quot;foo.h&quot;
+#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; some_function(1,2);
+}
+</code></pre>
+<p>文件创建并编写完成后，可以按 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> 打开命令面板，输入“configure”检索并执行“CMake: Configure”命令。也可以关闭窗口并重新打开，CMake 插件也会自动检测到当前文件夹下的这个 CMake 项目。</p>
+<figure>
+<img src="https://img-blog.csdnimg.cn/38b5387a1b8947779b325da1ea3e88f0.png" style="border-radius: 5px; outline: 1px solid gray; outline-offset: -1px;">
+<figcaption>Configure CMake 项目</figcaption>
+</figure>
+<p>执行 Configure 操作时，CMake 插件会提示我们选择一个 Kit，根据需要选择自己需要使用的 Kit 即可。</p>
+<figure>
+<img src="https://img-blog.csdnimg.cn/e56e6248ffbf4e62badd8d6dafcaf905.png" style="border-radius: 5px; outline: 1px solid gray; outline-offset: -1px;">
+<figcaption>选择要使用的 Kit</figcaption>
+</figure>
+<p>如果没有问题，CMake 插件将会有类似如下的输出：</p>
+<figure>
+<img src="https://img-blog.csdnimg.cn/db135ff7441b42b6a398beed73b8688a.png" style="border-radius: 5px; outline: 1px solid gray; outline-offset: -1px;">
+<figcaption>Configure 完成的输出</figcaption>
+</figure>
+<blockquote>
+<p>如果出现问题，可以尝试显式指定 CMake 使用的 Generator。</p>
+</blockquote>
+<p>CMake 插件默认在 Visual Studio 窗口的底端提供了一些按钮：</p>
+<p><kbd>⚙ Build</kbd> 按钮旁的是要构建的目标，默认为 all，也就是所有的目标。</p>
+<figure>
+<img src="https://img-blog.csdnimg.cn/a5a88e480ed84a99b2f6b2979d8f8d93.png" style="border-radius: 5px; outline: 1px solid gray; outline-offset: -1px;">
+<figcaption>选择要 Build 的目标</figcaption>
+</figure>
+<p>点击 <kbd>⚙ Build</kbd> 按钮即可开始构建指定的项目。</p>
+<p>CMake 插件默认的构建目录为工作目录下的 <code>build</code> 目录。CMake 生成的文件，以及构建产生的结果，都会在这个目录下。</p>
+<blockquote>
+<p>这种方式称为“out-of-source build（在源代码之外构建）”，即构建相关的文件与源代码是分离开的，不会污染代码树。</p>
+</blockquote>
+<p><kbd>🐞</kbd> 和 <kbd>▶</kbd> 按钮分别为“调试运行”与“运行”；使用它们旁边的按钮可以选择要调试/运行的项目。</p>
+<figure>
+<img src="https://img-blog.csdnimg.cn/c396b38eae5849368b5ad2a1850d5319.png" style="border-radius: 5px; outline: 1px solid gray; outline-offset: -1px;">
+<figcaption>选择要调试/运行的项目</figcaption>
+</figure>
+<h2 id="子项目"><a class="header" href="#子项目">子项目</a></h2>
+<p>一个含有 CMakeLists.txt 文件的目录就可以视作一个项目。假如一个目录中下有多个 CMake 项目，也可以使用 <code>add_subdirectory</code> 命令将它们添加进来。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="windows-下使用-vcpkg--cmake-进行开发"><a class="header" href="#windows-下使用-vcpkg--cmake-进行开发">Windows 下使用 vcpkg + CMake 进行开发</a></h1>
+<h2 id="vcpkg"><a class="header" href="#vcpkg">vcpkg</a></h2>
+<p>vcpkg 是一款开源的、基于源代码的 C++ 依赖管理器。简单地说，用户可以使用 vcpkg 安装自己需要的 C++ 依赖。</p>
+<p>将 vcpkg 的整个仓库克隆在本地，再执行提供的脚本，即可完成 vcpkg 的部署，详情参见 <a href="https://github.com/microsoft/vcpkg">vcpkg 仓库的 README</a> 或 <a href="https://vcpkg.io/en/getting-started.html">网站上的说明材料</a>。</p>
+<blockquote>
+<p>无论是 vcpkg 还是之后安装软件包的代码，很多都是从 GitHub 取得的，因此可能需要用户具有相应的网络访问环境。</p>
+<p>笔者实验时，vcpkg 会<strong>自动使用系统代理</strong>（如果进行了相应的配置），但执行 <code>git clone</code> 需要在终端中<strong>手动设置 HTTP 和 HTTPS 代理服务器地址相关的环境变量</strong>。</p>
+</blockquote>
+<p>vcpkg 的若干实例是互不影响的。可以在计算机上部署多个 vcpkg 的实例。</p>
+<blockquote>
+<p>针对其这个特性，用户可以切换到 vcpkg 的目录下再执行命令，而不是将 vcpkg 可执行文件的路径添加到 PATH。</p>
+</blockquote>
+<p>由于 vcpkg 是基于源代码的，因此在安装软件包之前，需要用户先安装微软的编译器 MSVC。除此之外，还需要额外安装 Visual Studio 的英语（English）语言包，才能顺利执行安装操作。</p>
+<blockquote>
+<p>也可以使用 MSYS2 作为开发环境使用 vcpkg，但是笔者暂未实验，故不作展开。</p>
+</blockquote>
+<h2 id="以安装-opencv-为例"><a class="header" href="#以安装-opencv-为例">以安装 OpenCV 为例</a></h2>
+<p>以安装 OpenCV 为例，用户在终端中切换到 vcpkg 的安装目录后，执行下面命令即可安装 OpenCV：</p>
+<pre><code class="language-console">PS&gt; ./vcpkg install opencv
+</code></pre>
+<p>需要注意，对于 OpenCV 以及其他一些包，vcpkg 在安装时<strong>有不同的 feature 可供选择</strong>。可以在 <a href="https://vcpkg.io/en/packages.html">vcpkg 网站上检索包对应的信息</a>，或者使用 <code>./vcpkg search &lt;packagename&gt;</code> 进行检索。</p>
+<p>比如，我们可以执行下面的命令，选择需要的 feature 并进行安装：</p>
+<pre><code class="language-console">PS&gt; ./vcpkg install opencv[core,dnn,jpeg,png,quirc,tiff,webp]
+</code></pre>
+<p>之后便会开始相对比较漫长的代码编译过程，可能会耗费约数十分钟或更久。同样，建议将 vcpkg 的目录添加进<strong>反病毒软件的排除项</strong>，可以加快速度。</p>
+<p>除此之外，在 Windows 上，上述命令默认将会构建针对 x86-windows 平台的 OpenCV，我们还需要手动指定构建安装针对 x64-windows 平台的 OpenCV。</p>
+<pre><code class="language-console">./vcpkg install opencv:x64-windows
+</code></pre>
+<p>编译过程中会产生很多文件（如 vcpkg 目录下的 buildtrees 目录，存放构建过程中产生的文件，如果保留可能会减少下次更新时花费的时间），可能会占用十数 GB 的磁盘空间。可以根据需要删除这些中间文件。</p>
+<h2 id="使用-vcpkg-中安装的包"><a class="header" href="#使用-vcpkg-中安装的包">使用 vcpkg 中安装的包</a></h2>
+<p>在如上述文章安装好 OpenCV 后，只需要在 <code>CMakeLists.txt</code> 中使用 <code>find_package(OpenCV REQUIRED)</code> 即可引入需要的安装包。</p>
+<p>在使用时可能还需要为 CMake 传入正确的参数，也就是 <strong>vcpkg 工具链的路径</strong>，具体操作将会在下文介绍。</p>
+<h3 id="cmakeliststxt-示例"><a class="header" href="#cmakeliststxt-示例">CMakeLists.txt 示例</a></h3>
+<p>一个完整的 CMakeLists.txt 文件类似如下：</p>
+<pre><code class="language-cmake">project(CMAKE_OPENCV_TEST)
+cmake_minimum_required(VERSION 3.13)
+
+find_package(OpenCV REQUIRED)
+# message(&quot;${OpenCV_DIR}&quot;)
+
+add_executable(main &quot;hello.cpp&quot;)
+target_link_libraries(main ${OpenCV_LIBS})
+</code></pre>
+<p>有些通过 vcpkg 安装的包，支持作为 CMake 目标引入，比如 {fmt} 库。</p>
+<pre><code># 安装 fmt 库
+PS&gt; ./vcpkg install fmt
+PS&gt; ./vcpkg install fmt:x64-windows
+</code></pre>
+<p>这样的库安装好后，vcpkg 会有相应的提示：</p>
+<p><img src="https://img-blog.csdnimg.cn/77cfe27005fa443587749113466cdfe7.png" alt="安装支持 CMake 目标的库后，vcpkg 会有相应的提示" />
+控制台最后输出如下：</p>
+<pre><code>The package fmt provides CMake targets:
+
+    find_package(fmt CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE fmt::fmt)
+
+    # Or use the header-only version
+    find_package(fmt CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE fmt::fmt-header-only)
+
+</code></pre>
+<p>也就是说，在 CMakeLists.txt 中可以这样子使用这样的库：</p>
+<pre><code>project(CMAKE_VCPKG_FMT_TEST)
+cmake_minimum_required(VERSION 3.13)
+
+find_package(fmt CONFIG REQUIRED)
+
+add_executable(main &quot;hello.cpp&quot;)
+target_link_libraries(main fmt::fmt)
+# 或者使用“仅头文件（header-only）”版本的 fmt
+# target_link_libraries(main fmt::fmt-header-only)
+</code></pre>
+<h3 id="cmake-传参"><a class="header" href="#cmake-传参">CMake 传参</a></h3>
+<p>在 CMake 配置过程中，需要将 vcpkg 目录下的 <code>scripts/buildsystems/vcpkg.cmake</code> 文件路径，作为 <code>CMAKE_TOOLCHAIN_FILE</code> 变量传入，这样 CMake 就可以识别到该 vcpkg 实例中安装的包了。</p>
+<p>比如，假设 vcpkg 的目录位于 <code>C:/dev/vcpkg/</code>，则需要在 CMake 的“Configure Args”中添加：</p>
+<pre><code>-DCMAKE_TOOLCHAIN_FILE=C:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake
+</code></pre>
+<p>这个选项通常可以在 IDE 的构建选项中找到。如果使用命令行界面，则可以采用类似如下的命令：</p>
+<pre><code>cmake \
+    -B [build directory] \
+    -S . \
+    -DCMAKE_TOOLCHAIN_FILE=&quot;[path to vcpkg]/scripts/buildsystems/vcpkg.cmake&quot;
+</code></pre>
+<blockquote>
+<p>需要注意，如果路径中包含空格，在 Shell 需要使用引号将路径包裹起来，以便Shell 将其视作一个整体传递给 CMake 程序。但如果在 IDE 中，则需要根据具体情况判断是否需要使用引号将路径包裹起来（即，IDE 在传递参数时，是直接将字符串传入给可执行程序，还是将其拼接在命令的最后并通过 Shell 界面执行命令）。</p>
+<p>如果有其他需要转义的字符，也需要根据 IDE 配置参数的方式，决定是否需要转义。比如，如果 IDE 使用配置文件的形式进行配置，则可能需要按照字符串字面量的转义方式对特殊符号进行处理；假如是在图形界面中输入的，则一般不需要对特殊符号进行转义。</p>
+</blockquote>
+<h3 id="visual-studio-code"><a class="header" href="#visual-studio-code">Visual Studio Code</a></h3>
+<p>VS Code 中的配置实际上是修改 CMake Tools 插件的配置，关于插件的使用见上一篇博文。</p>
+<p><img src="https://img-blog.csdnimg.cn/c460b12a612645748cc3da1fab9c80d3.png" alt="在 VS Code 的设置中搜索 CMake: Configure args 选项，点击 Add Item 添加工具链路径的参数" /></p>
+<p>在 VS Code 的设置中搜索 CMake: Configure args 选项，点击 Add Item 添加上一节中提到的参数。</p>
+<p>这个选项也可以设置成目录的（而非全局的），也就是在工作目录下新建一个 <code>.vscode</code> 目录，在其中新建一个 <code>settings.json</code>，并在其中添加一个键名为 <code>cmake.configureArgs</code> 、值为一个列表的键值对。</p>
+<p>列表中添加一个定义 <code>CMAKE_TOOLCHAIN_FILE</code> 变量的选项：</p>
+<pre><code class="language-json">&quot;cmake.configureArgs&quot;: [
+  &quot;-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=TRUE&quot;,
+  &quot;-DCMAKE_TOOLCHAIN_FILE=C:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake&quot;
+]
+</code></pre>
+<p>最后的 <code>settings.json</code> 文件类似如下：</p>
+<pre><code class="language-json">{
+  &quot;cmake.configureArgs&quot;: [
+    &quot;-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=TRUE&quot;,
+    &quot;-DCMAKE_TOOLCHAIN_FILE=C:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake&quot;
+  ]
+}
+</code></pre>
+<p>其他的 IDE 配置类似。</p>
+<h4 id="visual-studio"><a class="header" href="#visual-studio">Visual Studio</a></h4>
+<p>在 Visual Studio 的搜索中 查找 CMake Settings for Project</p>
+<p><img src="https://img-blog.csdnimg.cn/8893a0b749d34adfb1ed3c57fcf1c6e2.png" alt="在 Visual Studio 的搜索中 查找 CMake Settings for Project" /></p>
+<p>这会在 CMake 项目下生成一个 <code>CMakeSettings.json</code> 文件，我们可以在某个配置（比如 x64-Debug）下的 <code>cmakeCommandArgs</code> 里添加相应的参数：</p>
+<pre><code class="language-json">{
+  &quot;configurations&quot;: [
+    {
+      &quot;name&quot;: &quot;x64-Debug&quot;,
+      &quot;generator&quot;: &quot;Ninja&quot;,
+      &quot;configurationType&quot;: &quot;Debug&quot;,
+      &quot;inheritEnvironments&quot;: [ &quot;msvc_x64_x64&quot; ],
+      &quot;buildRoot&quot;: &quot;${projectDir}\\out\\build\\${name}&quot;,
+      &quot;installRoot&quot;: &quot;${projectDir}\\out\\install\\${name}&quot;,
+      &quot;cmakeCommandArgs&quot;: &quot;&quot;, // 在这里添加相应的参数
+      &quot;buildCommandArgs&quot;: &quot;&quot;,
+      &quot;ctestCommandArgs&quot;: &quot;&quot;
+    }
+  ]
+}
+</code></pre>
+<h4 id="clion"><a class="header" href="#clion">CLion</a></h4>
+<p>CLion 的配置也是类似，在“文件（Files）”-&gt;“设置（Settings）”-&gt;“构建、执行、部署（Build, Execution, Deplyment）”-&gt;“CMake” 中，在某个配置中的 CMake options 中添加相应的 <code>-D</code> 参数。</p>
+<p><img src="https://img-blog.csdnimg.cn/6897fe5c56234afdb0fb13f6f6024296.png" alt="CLion 的配置说明图" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="编程技巧"><a class="header" href="#编程技巧">编程技巧</a></h1>
+<ul>
+<li><a href="coding-tips/./float-to-string.html">C++ 浮点数转为字符串</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="c-浮点数转为字符串"><a class="header" href="#c-浮点数转为字符串">C++ 浮点数转为字符串</a></h1>
+<p>C++ 如何将浮点数转为字符串，并保留一定小数位数呢？比如有一个数 <code>25.56789</code>，只想保留小数点后两位。</p>
+<p><code>sprintf</code>、<code>snprintf</code> 是比较 C 语言的函数，用法也比较简单，本文不再过多介绍，接下来主要介绍一些 C++ 的写法。</p>
+<p>先放参考链接：</p>
+<ul>
+<li><a href="https://stackoverflow.com/questions/59817048/how-to-use-stdto-string-function-to-format-float-as-x-0">c++ - How to use std::to_string function to format float as “x.0” - Stack Overflow</a></li>
+</ul>
+<h2 id="1-stdstringstream"><a class="header" href="#1-stdstringstream">1. std::stringstream</a></h2>
+<p>直接上代码：</p>
+<pre><code class="language-cpp">#include &lt;sstream&gt;
+
+auto formatDobleValue(double val, int fixed) {
+    std::ostringstream oss;
+    oss &lt;&lt; std::setprecision(fixed) &lt;&lt; val;
+    return oss.str();
+}
+</code></pre>
+<h2 id="2-stdto_string--求子串"><a class="header" href="#2-stdto_string--求子串">2. std::to_string + 求子串</a></h2>
+<p>虽然 <code>std::to_string</code> 不支持指定格式化小数的位数，但是我们可以用求子串的方式得到我们想要的结果。</p>
+<pre><code class="language-cpp">#include &lt;string&gt;
+
+auto formatDobleValue(double val, int fixed) {
+    auto str = std::to_string(val);
+    return str.substr(0, str.find(&quot;.&quot;) + fixed + 1);
+}
+</code></pre>
+<h2 id="3-stdto_chars-c-17"><a class="header" href="#3-stdto_chars-c-17">3. std::to_chars (C++ 17)</a></h2>
+<p><a href="https://en.cppreference.com/w/cpp/utility/to_chars">std::to_chars - cppreference.com</a></p>
+<p><a href="https://www.bfilipek.com/2019/11/tochars.html">Bartek's coding blog: How to Convert Numbers into Text with std::to_char in C++17 (bfilipek.com)</a></p>
+<pre><code class="language-cpp">#include &lt;charconv&gt;
+#include &lt;system_error&gt;
+#include &lt;string&gt;
+#include &lt;array&gt;
+
+auto formatDobleValue(double val, int fixed) {
+    std::array&lt;char, 10&gt; str; // char str[10];
+    auto [ptr, ec] = std::to_chars(str.data(), str.data() + str.size(), val, 
+        std::chars_format::fixed, fixed);
+    if (ec == std::errc()) {
+        return std::string(str.data(), ptr - str.data());
+    }
+    else return std::string();
+}
+
+#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; formatDobleValue(0.12345, 3) &lt;&lt; &quot;\n&quot;;
+}
+</code></pre>
+<p>但是很遗憾，截至目前，貌似只有 MSVC 支持除整型以外的重载。估计大家觉得，既然有了 <code>std::format</code>，<code>std::to_chars</code> 就显得比较鸡肋了……</p>
+<p><a href="https://stackoverflow.com/questions/63963961/what-is-the-correct-way-to-call-stdto-chars">c++ - What is the correct way to call std::to_chars? - Stack Overflow</a></p>
+<h2 id="4-stdformat-c-20"><a class="header" href="#4-stdformat-c-20">4. std::format (C++ 20)</a></h2>
+<p>此外，还可以采用 C++ 20  的 <code>std::format</code>！</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;format&gt;
+
+int main() {
+	std::cout &lt;&lt; &quot;Hello World!&quot; &lt;&lt; std::endl;
+	std::cout &lt;&lt; std::format(&quot;{:.3f}&quot;, 22.1234345) &lt;&lt; std::endl;
+}
+</code></pre>
+<p>是不是简单很多？最新的 Visual Studio Preview 已经支持了，快去试试吧！</p>
+<p>需要指定 C++ 版本为 20。建议用 CMake 指定项目的 C++ 版本，方便多了。</p>
+<pre><code class="language-cmake">cmake_minimum_required(VERSION 3.1)
+project (&quot;CProgramming&quot;)
+
+set(CMAKE_CXX_STANDARD 20)
+
+add_executable(hello hello.cpp)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="tx2-使用笔记"><a class="header" href="#tx2-使用笔记">TX2 使用笔记</a></h1>
+<ul>
+<li><a href="TX2/./new-to-tx2.html">初识 TX2</a></li>
+<li><a href="TX2/./using-proxy.html">在 TX2 使用代理</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="初识-tx2暨嵌入式开发之旅启程"><a class="header" href="#初识-tx2暨嵌入式开发之旅启程">初识 TX2——暨嵌入式开发之旅启程</a></h1>
+<p>TX2 即 NVIDIA Jetson TX2 的简称。</p>
+<p>最开始不理解 TX2 的构造，完全就是个很高级的存在，而且看起来也和网上搜到的图片不一样——网上的图片很大一个，我们手上的确很小，甚至一直怀疑我们的是否是 TX2，后来一点点才理解到这个东西。</p>
+<blockquote>
+<p>其实当时多上淘宝查一下应该也能明白。</p>
+</blockquote>
+<p>这里就不卖关子了，现在就来介绍一下这 TX2 的构造，首先是有一个 TX2 核心板，然后有一个载板（carrier board），载板上有各种接口，同时负责供电。核心板需要载板才能工作。</p>
+<p>之前让我疑惑的地方就在载板上，这载板有很多种，NVIDIA 官方的就很大，然后又有很多厂家也会设计第三方的载板，它们往往更小，在功能、性能上往往也有变化，甚至自己都可以设计一个。但是第三方的就会存在兼容问题，在给 TX2 安装系统时，需要额外刷入固件包，也会麻烦一些。</p>
+<p>官方的板子就不说了，一切都比较简单，网上直接搜 TX2 也有不胜其数的上电记录。</p>
+<p>下边有几点疑问：</p>
+<ul>
+<li>为什么叫上电而不是开机呢？为什么也有人要管TX2叫开发板呢？</li>
+<li>嵌入式系统和平时家用的桌面 PC 有什么不一样呢？</li>
+<li>板级支持包（BSP，Board Support Package）是什么？</li>
+<li>设备树（Device Tree）又是什么呢？</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="在-tx2-上使用代理"><a class="header" href="#在-tx2-上使用代理">在 TX2 上使用代理</a></h1>
+<p>在 TX2 上使用代理和在其他 Linux 系统上是类似的。</p>
+<p>也许读者在其他平台有过使用代理的经历，那样也请暂时放下已有的经验，参考一下本教程的方法。</p>
+<p>本教程将会介绍 <a href="https://github.com/Dreamacro/clash">Clash</a> 这样一款基于规则的代理软件。其支持多种协议，如 VMess、Shadowsocks、Trojan 协议。</p>
+<h2 id="订阅和订阅链接"><a class="header" href="#订阅和订阅链接">订阅和订阅链接</a></h2>
+<p>一般的，在用户购买服务后，网络代理服务商需要将代理服务器的连接信息提供给用户，一般为某种代理软件所支持的配置文件格式，且通常会提供适用于多种软件的配置文件。</p>
+<p>此外，这些信息一般是以“订阅”的形式提供的。我们通过“订阅链接”，可以随时获取到最新的代理服务器信息。比如，我们可以通过“Clash 订阅链接”获得到适用于 Clash 的配置文件。</p>
+<p>需要注意，一定要<strong>保护好自己的订阅链接</strong>，不得在公共网络上明文传输。</p>
+<h2 id="tx2-本机上运行代理软件"><a class="header" href="#tx2-本机上运行代理软件">TX2 本机上运行代理软件</a></h2>
+<p>读者可能已经使用过类似 <a href="https://github.com/Fndroid/clash_for_windows_pkg">Clash for Windows</a> 这样的图形化软件。<a href="https://github.com/Dreamacro/clash">Clash</a> 本身是一款 CLI 程序（命令行界面程序），但是有很多应用程序为其设计了图形化界面前端。</p>
+<blockquote>
+<p>至于为什么使用 Clash 命令行程序，是因为很多图形前端没有适用于 ARM64 架构（也就是 TX2 处理器的架构）的版本。</p>
+</blockquote>
+<p>接下来，将介绍 <a href="https://github.com/Dreamacro/clash">Clash</a> 的使用。</p>
+<h3 id="下载程序"><a class="header" href="#下载程序">下载程序</a></h3>
+<p>首先我们需要下载适用于本机的 Clash 发行版。我们在 <a href="https://github.com/Dreamacro/clash/releases">Clash 的发布页</a> 找到对应机器平台的构建，比如 TX2 上运行的是 Linux for Tegra(L4T)，其处理器架构为 ARM，因此我们下载文件名种有 <code>linux-armv8</code> 字样的压缩包。</p>
+<p>笔者书写文章时，最新版本为 1.8.0，因此我们下载名为 <code>clash-linux-armv8-v1.8.0.gz</code> 的文件（压缩包）。</p>
+<blockquote>
+<p>注意：由于大部分情况下，下载过程本身需要相应的网络条件，建议先在具备网络条件的环境下载好软件后，将软件复制到 TX2 上，可以使用 U 盘也可以使用 <code>scp</code>（如果 USB 接口比较紧缺）。</p>
+</blockquote>
+<p>之后，解压软件的压缩包，得到可执行程序文件。新建一个目录，名为 <code>clash</code>，将解压得到的文件放入 <code>clash</code> 目录下。</p>
+<p>接着，进入 <code>clash</code> 目录，并为可执行程序添加执行权限。</p>
+<pre><code class="language-console">$ cd clash
+$ chmod +x clash-linux-armv8
+</code></pre>
+<h3 id="获取配置文件"><a class="header" href="#获取配置文件">获取配置文件</a></h3>
+<p>接下来，我们需要将从订阅链接获得到的 Clash 配置文件，放入同目录下。</p>
+<p>一种方法是直接在浏览器中访问订阅链接，在打开的页面的上下文菜单选择“另存为”，将得到的内容保存为 <code>config.yaml</code> 并存储在 <code>clash</code> 目录下。</p>
+<blockquote>
+<p>或者，如果是使用 SSH 远程连接的情况，直接在主机上全选网页内容，复制到粘贴板，然后用 <code>vi</code> 或 <code>vim</code> 等编辑器将内容粘贴到 <code>config.yaml</code> 文件中。</p>
+</blockquote>
+<p>另一种方法是使用 <code>wget</code> 命令获取订阅链接的内容。建议将订阅链接包含于一对引号 <code>''</code> 中，以便 shell 程序将其视作一个整体。</p>
+<pre><code class="language-console">$ wget -O config.yaml '订阅链接'
+</code></pre>
+<figure>
+<p><img src="https://mxwljsq.com/theme/malio/img/tutorial/linux-clash-2.jpg" alt="在终端中使用 wget 命令获取订阅链接的内容" /></p>
+<figcaption>在终端中使用 wget 命令获取订阅链接的内容</figcaption>
+</figure>
+<h3 id="运行-clash-程序"><a class="header" href="#运行-clash-程序">运行 clash 程序</a></h3>
+<p>之后，在终端中执行 Clash 可执行程序即可：</p>
+<pre><code class="language-console">$ ./clash -d .
+</code></pre>
+<p>也可以在后台执行 Clash 程序（详见 bash 作业控制）：</p>
+<pre><code class="language-console">$ ./clash -d . &amp;
+</code></pre>
+<h3 id="使用代理"><a class="header" href="#使用代理">使用代理</a></h3>
+<p>程序启动后，默认侦听本机的 7890 端口，也就是 <code>127.0.0.1:7890</code>。我们将程序的网络请求转发到这个位置，就能实现代理了。</p>
+<p>比如，我们新建一个终端，在该次会话中增加 <code>http_proxy</code> 和 <code>https_proxy</code> 两个环境变量：</p>
+<pre><code class="language-console">$ export http_proxy='127.0.0.1:7890'
+$ export https_proxy='127.0.0.1:7890'
+</code></pre>
+<p>之后，再在这个终端中启动程序（比如 <code>git clone</code> 或者 <code>firefox</code>），一般就会使用到相应的代理配置了。</p>
+<pre><code class="language-console">$ git clone 仓库链接
+</code></pre>
+<p>此外，也可以将其<strong>设置为系统代理</strong>。以 Ubuntu 系统为例，打开系统设置，选择网络，点击网络代理右边的 <kbd>⚙</kbd> 按钮，选择手动，填写 HTTP 和 HTTPS 代理为 <code>127.0.0.1:7890</code>，填写 Socks 主机为 <code>127.0.0.1:7891</code>，即可启用系统代理。</p>
+<figure>
+<p><img src="https://mxwljsq.com/theme/malio/img/tutorial/linux-clash-5.jpg" alt="在 Ubuntu 的图形化设置界面中配置代理" /></p>
+<figcaption>在 Ubuntu 的图形化设置界面中配置代理</figcaption>
+</figure>
+<p>当不再使用代理时，可以在 clash 运行的终端里按下 <kbd>Control</kbd> + <kbd>C</kbd> 以退出程序。程序结束后，需要记得取消系统代理，不然会出现无法正常访问网络的情况。</p>
+<h2 id="使用局域网内其他机器上的代理"><a class="header" href="#使用局域网内其他机器上的代理">使用局域网内其他机器上的代理</a></h2>
+<p>（未完待续）</p>
+<h2 id="参考链接"><a class="header" href="#参考链接">参考链接</a></h2>
+<ul>
+<li><a href="https://mxwljsq.com/user/tutorial?os=linux&amp;client=clash">https://mxwljsq.com/user/tutorial?os=linux&amp;client=clash</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            MathJax.Hub.Register.StartupHook('End', function() {
+                window.setTimeout(window.print, 100);
+            });
+        });
+        </script>
+    </body>
+</html>
