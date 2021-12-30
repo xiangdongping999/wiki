@@ -52,7 +52,7 @@ $ chmod +x clash-linux-armv8
 ```console
 $ wget -O config.yaml '订阅链接'
 ```
-
+**最终的config.yaml文件应该保存到 ~/.config/clash/下
 <figure>
 
 ![在终端中使用 wget 命令获取订阅链接的内容](https://mxwljsq.com/theme/malio/img/tutorial/linux-clash-2.jpg)
